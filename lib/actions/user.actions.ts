@@ -46,7 +46,7 @@ export const signIn = async ({ email, password }: signInProps) => {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'strict',
-			secure: false,
+			secure: true,
 		});
 
 		const user = await getUserInfo({ userId: session.userId });
@@ -101,7 +101,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'strict',
-			secure: false,
+			secure: true,
 		});
 
 		return parseStringify(newUser);
@@ -248,5 +248,58 @@ export const exchangePublicToken = async ({
 		});
 	} catch (error) {
 		console.error('An error occurred while creating exchanging token:', error);
+	}
+};
+
+export const getBanks = async ({ userId }: getBanksProps) => {
+	try {
+		const { database } = await createAdminClient();
+
+		const banks = await database.listDocuments(
+			DATABASE_ID!,
+			BANK_COLLECTION_ID!,
+			[Query.equal('userId', [userId])]
+		);
+
+		return parseStringify(banks.documents);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const getBank = async ({ documentId }: getBankProps) => {
+	try {
+		console.log('Fetching bank with documentId:', documentId); // Add this log
+		const { database } = await createAdminClient();
+
+		const bank = await database.listDocuments(
+			DATABASE_ID!,
+			BANK_COLLECTION_ID!,
+			[Query.equal('$id', [documentId])]
+		);
+
+		return parseStringify(bank.documents[0]);
+	} catch (error) {
+		console.log('Error in getBank:', error); // Add this log
+	}
+};
+
+export const getBankByAccountId = async ({
+	accountId,
+}: getBankByAccountIdProps) => {
+	try {
+		const { database } = await createAdminClient();
+
+		const bank = await database.listDocuments(
+			DATABASE_ID!,
+			BANK_COLLECTION_ID!,
+			[Query.equal('accountId', [accountId])]
+		);
+
+		if (bank.total !== 1) return null;
+
+		return parseStringify(bank.documents[0]);
+	} catch (error) {
+		console.log(error);
 	}
 };
