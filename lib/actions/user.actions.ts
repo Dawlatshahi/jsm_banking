@@ -46,7 +46,7 @@ export const signIn = async ({ email, password }: signInProps) => {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'strict',
-			secure: true,
+			secure: false,
 		});
 
 		const user = await getUserInfo({ userId: session.userId });

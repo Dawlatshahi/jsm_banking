@@ -45,7 +45,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
 					type: accountData.type as string,
 					subtype: accountData.subtype! as string,
 					appwriteItemId: bank.$id,
-					sharaebleId: bank.shareableId,
+					shareableId: bank.shareableId,
 				};
 
 				return account;
@@ -68,6 +68,10 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
 	try {
 		// get bank from db
 		const bank = await getBank({ documentId: appwriteItemId });
+		if (!bank || !bank.accessToken) {
+			console.error('Bank not found or access token missing.');
+			return null;
+		}
 
 		// get account info from plaid
 		const accountsResponse = await plaidClient.accountsGet({
