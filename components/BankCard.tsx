@@ -11,10 +11,10 @@ const BankCard = ({
 	showBalance = true,
 }: CreditCardProps) => {
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col pr-8">
 			<Link
 				href={`transaction-history/?id=${account.appwriteItemId}`}
-				className="bank-card min-w-[325px]"
+				className="bank-card min-w-[300px]"
 			>
 				<div className="bank-card_content">
 					<div>
