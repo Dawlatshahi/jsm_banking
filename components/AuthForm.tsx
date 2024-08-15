@@ -32,7 +32,6 @@ const AuthForm = ({ type }: { type: string }) => {
 
 	const formSchema = authFormSchema(type);
 
-	// 1. Define your form.
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -41,13 +40,10 @@ const AuthForm = ({ type }: { type: string }) => {
 		},
 	});
 
-	// 2. Define a submit handler.
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		setIsLoading(true);
 
 		try {
-			// Sign up with Appwrite & create plaid token
-
 			if (type === 'sign-up') {
 				const userData = {
 					firstName: data.firstName!,
@@ -90,10 +86,10 @@ const AuthForm = ({ type }: { type: string }) => {
 						src="/icons/logo.svg"
 						width={34}
 						height={34}
-						alt="Horizon logo"
+						alt="FBank logo"
 					/>
 					<h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-						Horizon
+						FBank
 					</h1>
 				</Link>
 
